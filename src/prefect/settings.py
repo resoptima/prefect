@@ -1306,6 +1306,28 @@ compromise. Adjust this setting based on your specific security requirements
 and usage patterns.
 """
 
+PREFECT_CLIENT_LIFESPAN_CONTEXT_STARTUP_TIMEOUT = Setting(
+    int,
+    default=30,
+)
+"""
+The time the client has to startup before we expect it has failed
+without reporting back.
+
+The client may on high load systems use an unknown time starting up.
+"""
+
+PREFECT_CLIENT_LIFESPAN_CONTEXT_SHUTDOWN_TIMEOUT = Setting(
+    int,
+    default=30,
+)
+"""
+The time the client has to shutdown before we expect it has
+failed without reporting back.
+
+The client may on high load systems use an unknown time doing the shutdown.
+"""
+
 PREFECT_UI_ENABLED = Setting(
     bool,
     default=True,
