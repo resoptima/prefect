@@ -31,6 +31,8 @@ from prefect.settings import (
     PREFECT_CLIENT_MAX_RETRIES,
     PREFECT_CLIENT_RETRY_EXTRA_CODES,
     PREFECT_CLIENT_RETRY_JITTER_FACTOR,
+    PREFECT_CLIENT_LIFESPAN_CONTEXT_STARTUP_TIMEOUT,
+    PREFECT_CLIENT_LIFESPAN_CONTEXT_SHUTDOWN_TIMEOUT,
 )
 from prefect.utilities.math import bounded_poisson_interval, clamped_poisson_interval
 
@@ -115,7 +117,9 @@ async def app_lifespan_context(app: ASGIApp) -> AsyncGenerator[None, None]:
         else:
             # Create a new lifespan manager
             APP_LIFESPANS[key] = context = LifespanManager(
-                app, startup_timeout=30, shutdown_timeout=30
+                app,
+                startup_timeout=PREFECT_CLIENT_LIFESPAN_CONTEXT_STARTUP_TIMEOUT.value(),
+                shutdown_timeout=PREFECT_CLIENT_LIFESPAN_CONTEXT_SHUTDOWN_TIMEOUT.value(),
             )
             APP_LIFESPANS_REF_COUNTS[key] = 1
 
